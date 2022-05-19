@@ -101,6 +101,78 @@ namespace Binary_tree_exercises.types
             return shapeEqual;
         }
 
+        public LinkedList<LinkedList<E>> Levels()
+        {
+            LinkedList<LinkedList<E>> result = new LinkedList<LinkedList<E>>();
+            int h = Height(this);
+            
+
+            for (int i = 1; i <= h; i++)
+            {
+                Queue<E> currentLevel = GetLevel(i);
+                LinkedList<E> level = new LinkedList<E>();
+
+                while (currentLevel.Count > 0)
+                {
+                    level.AddLast(currentLevel.Dequeue());
+                }
+
+                result.AddLast(level);
+            }
+
+            return result;
+        }
+
+        public Queue<E> GetLevel(int level)
+        {
+            Queue<E> result = new Queue<E>();
+
+            GetLevel(this, level, result);
+
+            return result;
+        }
+
+        private void GetLevel(BinaryTree<E> r, int level, Queue<E> result)
+        {
+            if (r == null)
+            {
+                return;
+            }
+
+            if (level == 1)
+            {
+                result.Enqueue(r.Data);
+            } 
+            else if (level > 1)
+            {
+                GetLevel(r.Left, level - 1, result);
+                GetLevel(r.Right, level - 1, result);
+            }
+        }
+
+        public int Height()
+        {
+            return Height(this);
+        }
+
+        private int Height(BinaryTree<E> r)
+        {
+            if (r == null)
+            {
+                return 0;
+            }
+
+            int lHeight = Height(r.Left);
+            int rHeight = Height(r.Right);
+
+            if (lHeight > rHeight)
+            {
+                return lHeight + 1;
+            }
+
+            return rHeight + 1;
+        }
+
         private bool Exist(BinaryTree<E> x)
         {
             return x != null;
